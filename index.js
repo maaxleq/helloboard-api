@@ -10,6 +10,8 @@ const getUrl = (type, city) => {
 }
 
 app.get("/weather/:city", (req, res) => {
+    res. header("Access-Control-Allow-Origin", "*");
+
     const url = getUrl("weather", req.params.city);
 
     axios.get(url)
@@ -36,6 +38,8 @@ app.get("/weather/:city", (req, res) => {
 });
 
 app.get("/forecast/:city", (req, res) => {
+    res. header("Access-Control-Allow-Origin", "*");
+
     const url = getUrl("forecast", req.params.city);
 
     axios.get(url)

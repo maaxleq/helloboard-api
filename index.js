@@ -31,7 +31,7 @@ app.get("/weather/:city", (req, res) => {
     })
     .catch(error => {
         console.log(error);
-        res.status(500).end();
+        res.status(error.response.status).end();
     });
 });
 
@@ -64,7 +64,7 @@ app.get("/forecast/:city", (req, res) => {
     })
     .catch(error => {
         console.log(error);
-        res.status(500).end();
+        res.status(error.response.status).end();
     });
 });
 

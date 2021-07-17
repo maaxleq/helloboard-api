@@ -16,24 +16,18 @@ app.get("/weather/:city", (req, res) => {
 
     axios.get(url)
     .then(result => {
-        if (result.data.cod == 200){
-            const responseData = {
-                weather: result.data.weather[0].description,
-                temp: Math.round(result.data.main.temp),
-                wind_speed: Math.round(result.data.wind.speed * 3.6),
-                humidity: result.data.main.humidity,
-                timestamp: result.data.dt,
-            };
+        const responseData = {
+            weather: result.data.weather[0].description,
+            temp: Math.round(result.data.main.temp),
+            wind_speed: Math.round(result.data.wind.speed * 3.6),
+            humidity: result.data.main.humidity,
+            timestamp: result.data.dt,
+        };
 
-            res.json(responseData);
-        }
-        else {
-            res.status(result.data.cod).end();
-        }
+        res.json(responseData);
     })
     .catch(error => {
-        console.log(error);
-        res.status(error.response.status).end();
+        res.end();
     });
 });
 
@@ -44,31 +38,24 @@ app.get("/forecast/:city", (req, res) => {
 
     axios.get(url)
     .then(result => {
-        console.log(result);
-        if (result.data.cod == 200){
-            const responseData = [];
+        const responseData = [];
 
-            for (let i = 0 ; i < 8 ; i++){
-                const data = result.data.list[i];
+        for (let i = 0 ; i < 8 ; i++){
+            const data = result.data.list[i];
 
-                responseData.push({
-                    weather: data.weather[0].description,
-                    temp: Math.round(data.main.temp),
-                    wind_speed: Math.round(data.wind.speed * 3.6),
-                    humidity: data.main.humidity,
-                    timestamp: data.dt,
-                });
-            }
-
-            res.json(responseData);
+            responseData.push({
+                weather: data.weather[0].description,
+                temp: Math.round(data.main.temp),
+                wind_speed: Math.round(data.wind.speed * 3.6),
+                humidity: data.main.humidity,
+                timestamp: data.dt,
+            });
         }
-        else {
-            res.status(result.data.cod).end();
-        }
+
+        res.json(responseData);
     })
     .catch(error => {
-        console.log(error);
-        res.status(error.response.status).end();
+        res.end();
     });
 });
 

@@ -5,14 +5,18 @@ require("dotenv").config();
 
 const app = express();
 
-const getUrl = (type, city) => {
+const getWeatherUrl = (type, city) => {
     return `https://api.openweathermap.org/data/2.5/${type}?q=${city}&units=metric&appid=${process.env.API_KEY}`;
+}
+
+const getLocateUrl = ip => {
+    return `https://ip-api.com/json/${ip}`;
 }
 
 app.get("/weather/:city", (req, res) => {
     res. header("Access-Control-Allow-Origin", "*");
 
-    const url = getUrl("weather", req.params.city);
+    const url = getWeatherUrl("weather", req.params.city);
 
     axios.get(url)
     .then(result => {
@@ -34,7 +38,7 @@ app.get("/weather/:city", (req, res) => {
 app.get("/forecast/:city", (req, res) => {
     res. header("Access-Control-Allow-Origin", "*");
 
-    const url = getUrl("forecast", req.params.city);
+    const url = getWeatherUrl("forecast", req.params.city);
 
     axios.get(url)
     .then(result => {
@@ -53,6 +57,20 @@ app.get("/forecast/:city", (req, res) => {
         }
 
         res.json(responseData);
+    })
+    .catch(error => {
+        res.end();
+    });
+});
+
+app.get("/locate", (req, res) => {
+    res. header("Access-Control-Allow-Origin", "*");
+
+    const url = getLocateUrl(req.ip);
+
+    axios.get(url)
+    .then(result => {
+        res.json(result);
     })
     .catch(error => {
         res.end();
